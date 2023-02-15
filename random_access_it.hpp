@@ -12,7 +12,7 @@ namespace ft{
 			typedef std::ptrdiff_t difference_type;
 			typedef std::random_access_iterator_tag iterator_category;
 
-			random_access_it(pointer ptr = 0) : _ptr(ptr) {}
+			random_access_it(pointer ptr(nullptr)) : _ptr(ptr) {}
 			random_access_it(const random_access_it &copy) : _ptr(copy._ptr) {}
 			~random_access_it() {}
 
@@ -20,7 +20,20 @@ namespace ft{
 			pointer operator->() const { return _ptr; }
 			reference operator [](difference_type n) const { return *(_ptr + n); }
 			random_access_it &operator++() { _ptr++; return *this; }
-			
+			random_access_it operator++(int) { random_access_it tmp(*this); ++(*this); return tmp; }
+			random_access_it &operator--() { _ptr--; return *this; }
+			random_access_it operator--(int) { random_access_it tmp(*this); --(*this); return tmp; }
+			random_access_it &operator+=(difference_type n) { _ptr += n; return *this; }
+			random_access_it &operator-=(difference_type n) { _ptr -= n; return *this; }
+			random_access_it operator+(difference_type n) const { random_access_it tmp(*this); return tmp += n; }
+			random_access_it operator-(difference_type n) const { random_access_it tmp(*this); return tmp -= n; }
+			difference_type operator-(const random_access_it &it) const {return _ptr - it._ptr; }
+			bool operator==(const random_access_it &it) const { return _ptr == it._ptr; }
+			bool operator!=(const random_access_it &it) const { return _ptr != it._ptr; }
+			bool operator<(const random_access_it &it) const { return _ptr < it._ptr; }
+			bool operator<=(const random_access_it &it) const { return _ptr <= it._ptr; }
+			bool operator>(const random_access_it &it) const { return _ptr > it._ptr; }
+			bool operator>=(const random_access_it &it) const {return _ptr >= it._ptr; }
 		private:
 			pointer _ptr;
 	};
