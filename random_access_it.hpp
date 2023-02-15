@@ -1,28 +1,31 @@
+#pragma once
 #include "vector.hpp"
+#include "iterator_traits.hpp"
 
-class Iterator {
-public:
-	Iterator();
-	Iterator(Iterator const &src);
-	~Iterator();
+namespace ft{
+	template <class T>
+	class random_access_it{
+		public:
+			typedef T value_type;
+			typedef T* pointer;
+			typedef T& reference;
+			typedef std::ptrdiff_t difference_type;
+			typedef std::random_access_iterator_tag iterator_category;
 
-	Iterator &operator=(Iterator const &rhs);
+			random_access_it(pointer ptr = 0) : _ptr(ptr) {}
+			random_access_it(const random_access_it &copy) : _ptr(copy._ptr) {}
+			~random_access_it() {}
 
-	bool operator==(Iterator const &rhs) const ;
-	bool operator!=(Iterator const &rhs) const;
-	bool operator<(Iterator const &rhs) const;
-	bool operator<=(Iterator const &rhs) const;
-	bool operator>(Iterator const &rhs) const;
-	bool operator>=(Iterator const &rhs) const;
+			reference operator*() const { return *_ptr; }
+			pointer operator->() const { return _ptr; }
+			reference operator [](difference_type n) const { return *(_ptr + n); }
+			random_access_it &operator++() { _ptr++; return *this; }
+			
+		private:
+			pointer _ptr;
+	};
+}
 
-	Iterator &operator++();
-	Iterator operator++(int);
-	Iterator &operator--();
-	Iterator operator--(int);
-
-	int &operator*() const;
-	int *operator->() const;
-};
 
 /* The operator in the iterator class in C++ refers to the various overloaded operators that allow you to manipulate iterators and access the elements they point to.
 
