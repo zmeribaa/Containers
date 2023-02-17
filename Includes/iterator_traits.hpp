@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vector.hpp"
+#include <iostream>
 #include <vector>
 namespace ft{
 	template<class Iterator>
@@ -20,7 +21,7 @@ namespace ft{
 	    typedef T value_type;
 	    typedef T* pointer;
 	    typedef T& reference;
-	    typedef random_access_iterator_tag iterator_category;
+	    typedef std::random_access_iterator_tag iterator_category;
 	};
 
 	template<class Category, class T, class Distance = ptrdiff_t,
@@ -40,6 +41,6 @@ namespace ft{
 		typedef T value_type;
 		typedef T* pointer;
 		typedef T& reference;
-		typedef random_access_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 	};
 }

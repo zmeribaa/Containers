@@ -6,14 +6,14 @@ namespace ft {
 	template <class T>
 	class reverse_iterator{
 		public:
-			typedef iterator iterator_type;
-			typedef T value_type;
-			typedef T* pointer;
-			typedef T& reference;
-			typedef std::ptrdiff_t difference_type;
-			typedef std::reverse_iteratorerator_tag iterator_category;
+			typedef T iterator_type;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::pointer pointer;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::reference reference;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::difference_type difference_type;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::random_access_iterator_tag iterator_category;
 
-			reverse_iterator(pointer ptr(nullptr)) : _curr(ptr) {}
+
+			reverse_iterator(pointer ptr = 0) : _curr(ptr) {}
 			reverse_iterator(const reverse_iterator &copy) : _curr(copy._curr) {}
 			~reverse_iterator() {}
 
@@ -27,7 +27,7 @@ namespace ft {
 			reverse_iterator &operator--() { _curr++; return *this; }
 			reverse_iterator operator--(int) { reverse_iterator tmp(*this); ++(*this); return tmp; }
 			reverse_iterator &operator+=(difference_type n) { _curr -= n; return *this; }
-			reverse_iterator &operator-=(difference_type n) { _curr -+= n; return *this; }
+			reverse_iterator &operator-=(difference_type n) { _curr += n; return *this; }
 			reverse_iterator operator+(difference_type n) const { reverse_iterator tmp(*this); return tmp -= n; }
 			reverse_iterator operator-(difference_type n) const { reverse_iterator tmp(*this); return tmp += n; }
 

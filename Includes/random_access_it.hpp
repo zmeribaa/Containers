@@ -7,12 +7,12 @@ namespace ft{
 	class random_access_it{
 		public:
 			typedef T value_type;
-			typedef T* pointer;
-			typedef T& reference;
-			typedef std::ptrdiff_t difference_type;
-			typedef std::random_access_iterator_tag iterator_category;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::pointer pointer;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::reference reference;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::difference_type difference_type;
+			typedef typename ft::iterator<std::random_access_iterator_tag, T>::iterator_category iterator_category;
 
-			random_access_it(pointer ptr(nullptr)) : _ptr(ptr) {}
+			random_access_it(pointer ptr = 0) : _ptr(ptr) {}
 			random_access_it(const random_access_it &copy) : _ptr(copy._ptr) {}
 			~random_access_it() {}
 
