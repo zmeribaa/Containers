@@ -23,8 +23,8 @@ template <class T, class Allocator = std::allocator<T> >
 			typedef Allocator allocator_type;
 			typedef typename Allocator::pointer pointer;
 			typedef typename Allocator::const_pointer const_pointer;
-			typedef ft::reverse_iterator<iterator> reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+			// typedef ft::reverse_iterator<iterator> reverse_iterator;
+			// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 			// 23.2.4.1 construct/copy/destroy:
 			explicit vector(const Allocator& = Allocator())
@@ -50,10 +50,10 @@ template <class T, class Allocator = std::allocator<T> >
 			const_iterator begin() const;
 			iterator end();
 			const_iterator end() const;
-			reverse_iterator rbegin();
-			const_reverse_iterator rbegin() const;
-			reverse_iterator rend();
-			const_reverse_iterator rend() const;
+			// reverse_iterator rbegin();
+			// const_reverse_iterator rbegin() const;
+			// reverse_iterator rend();
+			// const_reverse_iterator rend() const;
 			// 23.2.4.2 capacity:
 			size_type size() const
 			{
@@ -84,8 +84,7 @@ template <class T, class Allocator = std::allocator<T> >
 						}
 						_alloc.deallocate(_data, _capacity);
 						_data = tmp;
-						_capacity = n;
-						 
+						_capacity = n; 
 					}
 			}
 			// element access:

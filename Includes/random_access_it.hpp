@@ -12,8 +12,9 @@ namespace ft{
 			typedef typename ft::iterator<std::random_access_iterator_tag, T>::difference_type difference_type;
 			typedef typename ft::iterator<std::random_access_iterator_tag, T>::iterator_category iterator_category;
 
-			random_access_it(pointer ptr = 0) : _ptr(ptr) {}
-			random_access_it(const random_access_it &copy) : _ptr(copy._ptr) {}
+			pointer it() const { return _ptr; }
+			random_access_it() : _ptr(NULL) {}
+			random_access_it(pointer ptr) : _ptr(ptr) {}
 			~random_access_it() {}
 
 			reference operator*() const { return *_ptr; }
@@ -28,15 +29,27 @@ namespace ft{
 			random_access_it operator+(difference_type n) const { random_access_it tmp(*this); return tmp += n; }
 			random_access_it operator-(difference_type n) const { random_access_it tmp(*this); return tmp -= n; }
 			difference_type operator-(const random_access_it &it) const {return _ptr - it._ptr; }
-			bool operator==(const random_access_it &it) const { return _ptr == it._ptr; }
-			bool operator!=(const random_access_it &it) const { return _ptr != it._ptr; }
-			bool operator<(const random_access_it &it) const { return _ptr < it._ptr; }
-			bool operator<=(const random_access_it &it) const { return _ptr <= it._ptr; }
-			bool operator>(const random_access_it &it) const { return _ptr > it._ptr; }
-			bool operator>=(const random_access_it &it) const {return _ptr >= it._ptr; }
+			
+			operator random_access_it<const T>() const { return random_access_it<const T>(_ptr); }
 		private:
 			pointer _ptr;
 	};
+			template <class T>
+			bool operator==(const random_access_it<T> &it1, const random_access_it<T> &it2) { return it1.it() == it2.it(); }
+			template <class T>
+			bool operator!=(const random_access_it<T> &it1, const random_access_it<T> &it2) { return it1.it() != it2.it(); }
+			template <class T>
+			bool operator<(const random_access_it<T> &it1, const random_access_it<T> &it2) { return it1.it() < it2.it(); }
+			template <class T>
+			bool operator<=(const random_access_it<T> &it1, const random_access_it<T> &it2) { return it1.it() <= it2.it(); }
+			template <class T>
+			bool operator>(const random_access_it<T> &it1, const random_access_it<T> &it2) { return it1.it() > it2.it(); }
+			template <class T>
+			bool operator>=(const random_access_it<T> &it1, const random_access_it<T> &it2) { return it1.it() >= it2.it(); }
+			template <class T>
+			random_access_it<T> operator+(typename random_access_it<T>::difference_type n, const random_access_it<T> &it) { return it + n; }
+			template<class T>
+			typename random_access_it<T>::difference_type operator-(const random_access_it<T> &it1, const random_access_it<T> &it2)  {return it1.it() - it2.it(); }
 }
 
 
