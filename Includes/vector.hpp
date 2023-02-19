@@ -34,22 +34,48 @@ template <class T, class Allocator = std::allocator<T> >
 				_capacity = 0;
 			}
 			explicit vector(size_type n, const T& value = T(),
-			const Allocator& = Allocator());
+			const Allocator& = Allocator())
+			{
+				_data = _alloc.allocate(n);
+				_size = n;
+				_capacity = n;
+				for (size_type i = 0 ; i < n ; i++)
+					_alloc.construct(&_data[i], value);
+			}
 			template <class InputIterator>
 			vector(InputIterator first, InputIterator last,
 			const Allocator& = Allocator());
 			vector(const vector<T,Allocator>& x);
-			~vector();
+			~vector()
+			{
+				for (size_type i = 0 ; i < _size ; i++)
+					_alloc.destroy(&_data[i]);
+			}
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
 			template <class InputIterator>
 			void assign(InputIterator first, InputIterator last);
 			void assign(size_type n, const T& u);
-			allocator_type get_allocator() const;
+			allocator_type get_allocator() const
+			{
+				return (_alloc);
+			}
 			// iterators:
-			iterator begin();
-			const_iterator begin() const;
-			iterator end();
-			const_iterator end() const;
+			iterator begin()
+			{
+				return (iterator(_data));
+			}
+			const_iterator begin() const
+			{
+				return (const_iterator(_data));
+			}
+			iterator end()
+			{
+				return (iterator(_data + _size));
+			}
+			const_iterator end() const
+			{
+				return (const_iterator(_data + _size));
+			}
 			// reverse_iterator rbegin();
 			// const_reverse_iterator rbegin() const;
 			// reverse_iterator rend();
@@ -88,17 +114,53 @@ template <class T, class Allocator = std::allocator<T> >
 					}
 			}
 			// element access:
-			reference operator[](size_type n);
-			const_reference operator[](size_type n) const;
-			const_reference at(size_type n) const;
-			reference at(size_type n);
-			reference front();
-			const_reference front() const;
-			reference back();
-			const_reference back() const;
+			reference operator[](size_type n)
+			{
+				return (_data[n]);
+			}
+			const_reference operator[](size_type n) const
+			{
+				return (_data[n]);
+			}
+			const_reference at(size_type n) const
+			{
+				if (n >= _size)
+					throw std::out_of_range("out of range");
+				return (_data[n]);
+			}
+			reference at(size_type n)
+			{
+				if (n >= _size)
+					throw std::out_of_range("out of range");
+				return (_data[n]);
+			}
+			reference front()
+			{
+				return (_data[0]);
+			}
+			const_reference front() const
+			{
+				return (_data[0]);
+			}
+			reference back()
+			{
+				return (_data[_size - 1]);
+			}
+			const_reference back() const
+			{
+				return (_data[_size - 1]);
+			}
 			// 23.2.4.3 modifiers:
-			void push_back(const T& x);
-			void pop_back();
+			void push_back(const T& x)
+			{
+				reserve(_size + 1);
+				_alloc.construct(&_data[_size], x);
+			}
+			void pop_back()
+			{
+				_alloc.destroy(&_data[_size - 1]);
+				_size--;
+			}
 			iterator insert(iterator position, const T& x);
 			void insert(iterator position, size_type n, const T& x);
 			template <class InputIterator>
