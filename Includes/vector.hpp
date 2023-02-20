@@ -3,7 +3,6 @@
 #include <string>
 #include <iostream>
 
-#include "vector.hpp"
 #include "random_access_it.hpp"
 #include "reverse_iterators.hpp"
 #include "iterator_traits.hpp"
@@ -158,17 +157,28 @@ template <class T, class Allocator = std::allocator<T> >
 			}
 			void pop_back()
 			{
-				_alloc.destroy(&_data[_size - 1]);
+				_alloc.destroy(&_data[_size - 1]);	
 				_size--;
 			}
-			iterator insert(iterator position, const T& x);
-			void insert(iterator position, size_type n, const T& x);
+			iterator insert(iterator position, const T& x); // homework
+			void insert(iterator position, size_type n, const T& x); // homework
 			template <class InputIterator>
 			void insert(iterator position,
 			InputIterator first, InputIterator last);
-			iterator erase(iterator position);
+			iterator erase(iterator position);// homework
 			iterator erase(iterator first, iterator last);
-			void swap(vector<T,Allocator>&);
+			void swap(vector<T,Allocator>& x)
+			{
+				pointer tmp = _data;
+				_data = x._data;
+				x._data = tmp;
+				size_type stmp = _size;
+				_size = x._size;
+				x._size = stmp;
+				stmp = _capacity;
+				_capacity = x._capacity;
+				x._capacity = stmp;
+			}
 			void clear()
 			{
 				for (size_type i = 0 ; i < _size ; i++)
@@ -204,5 +214,5 @@ template <class T, class Allocator = std::allocator<T> >
 			const vector<T,Allocator>& y);
 			// specialized algorithms:
 			template <class T, class Allocator>
-			void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
+			void swap(vector<T,Allocator>& x, vector<T,Allocator>& y); // homework
 }
