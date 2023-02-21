@@ -160,12 +160,83 @@ template <class T, class Allocator = std::allocator<T> >
 				_alloc.destroy(&_data[_size - 1]);	
 				_size--;
 			}
-			iterator insert(iterator position, const T& x); // homework
-			void insert(iterator position, size_type n, const T& x); // homework
+			iterator insert(iterator position, const T& x)
+			{
+				pointer tmp = _alloc.allocate(_capacity + 1);
+				size_type i = 0;
+				for (iterator it = begin() ; it != position ; it++)
+				{
+					_alloc.construct(&tmp[i], *it);
+					_alloc.destroy(&_data[i]);
+					i++;
+				}
+				_alloc.construct(&tmp[i], x);
+				i++;
+				for (iterator it = position ; it != end() ; it++)
+				{
+					_alloc.construct(&tmp[i], *it);
+					_alloc.destroy(&_data[i - 1]);
+					i++;
+				}
+				_alloc.deallocate(_data, _capacity);
+				_data = tmp;
+				_size++;
+				_capacity++;
+				return (iterator(&_data[i - 1]));
+			} // homework
+			void insert(iterator position, size_type n, const T& x)
+			{
+				pointer tmp = _alloc.allocate(_capacity + n);
+				size_type i = 0;
+				for (iterator it = begin() ; it != position ; it++)
+				{
+					_alloc.construct(&tmp[i], *it);
+					_alloc.destroy(&_data[i]);
+					i++;
+				}
+				for (size_type j = 0 ; j < n ; j++)
+				{
+					_alloc.construct(&tmp[i], x);
+					i++;
+				}
+				for (iterator it = position ; it != end() ; it++)
+				{
+					_alloc.construct(&tmp[i], *it);
+					_alloc.destroy(&_data[i - n]);
+					i++;
+				}
+				_alloc.deallocate(_data, _capacity);
+				_data = tmp;
+				_size += n;
+				_capacity += n;
+			} // homework
 			template <class InputIterator>
 			void insert(iterator position,
 			InputIterator first, InputIterator last);
-			iterator erase(iterator position);// homework
+			iterator erase(iterator position)
+			{
+				pointer tmp = _alloc.allocate(_capacity - 1);
+				size_type i = 0;
+				for (iterator it = begin() ; it != position ; it++)
+				{
+					_alloc.construct(&tmp[i], *it);
+					_alloc.destroy(&_data[i]);
+					i++;
+				}
+				_alloc.destroy(&_data[i]);
+				i++;
+				for (iterator it = position + 1 ; it != end() ; it++)
+				{
+					_alloc.construct(&tmp[i - 1], *it);
+					_alloc.destroy(&_data[i]);
+					i++;
+				}
+				_alloc.deallocate(_data, _capacity);
+				_data = tmp;
+				_size--;
+				_capacity--;
+				return (iterator(&_data[i - 2]));
+			} // homework
 			iterator erase(iterator first, iterator last);
 			void swap(vector<T,Allocator>& x)
 			{
@@ -214,5 +285,8 @@ template <class T, class Allocator = std::allocator<T> >
 			const vector<T,Allocator>& y);
 			// specialized algorithms:
 			template <class T, class Allocator>
-			void swap(vector<T,Allocator>& x, vector<T,Allocator>& y); // homework
+			void swap(vector<T,Allocator>& x, vector<T,Allocator>& y)
+			{
+				x.swap(y);
+			} // homework
 }
